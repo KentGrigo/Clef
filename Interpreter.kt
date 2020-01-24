@@ -24,28 +24,28 @@ class Interpreter {
             }
 
             is Addition -> {
-                evaluateBinaryIntegerFunctions(
+                evaluateBinaryFunctions(
                     program.expression1,
                     program.expression2,
                     state
                 ) { a, b -> Integer(a + b) }
             }
             is Subtraction -> {
-                evaluateBinaryIntegerFunctions(
+                evaluateBinaryFunctions(
                     program.expression1,
                     program.expression2,
                     state
                 ) { a, b -> Integer(a - b) }
             }
             is Multiplication -> {
-                evaluateBinaryIntegerFunctions(
+                evaluateBinaryFunctions(
                     program.expression1,
                     program.expression2,
                     state
                 ) { a, b -> Integer(a * b) }
             }
             is Division -> {
-                evaluateBinaryIntegerFunctions(
+                evaluateBinaryFunctions(
                     program.expression1,
                     program.expression2,
                     state
@@ -59,21 +59,21 @@ class Interpreter {
             }
 
             is LessThan -> {
-                evaluateBinaryBoolFunctions(
+                evaluateBinaryFunctions(
                     program.expression1,
                     program.expression2,
                     state
                 ) { a, b -> Bool(a < b) }
             }
             is LessThanOrEqual -> {
-                evaluateBinaryBoolFunctions(
+                evaluateBinaryFunctions(
                     program.expression1,
                     program.expression2,
                     state
                 ) { a, b -> Bool(a <= b) }
             }
             is Equal -> {
-                evaluateBinaryBoolFunctions(
+                evaluateBinaryFunctions(
                     program.expression1,
                     program.expression2,
                     state
@@ -82,7 +82,7 @@ class Interpreter {
 
             is VariableAssignment -> {
                 val (program1, state1) = evaluate(program.expression, state)
-                val state2 = state.assignVariable(program.variable, program1)
+                val state2 = state1.assignVariable(program.variable, program1)
                 Pair(program1, state2)
             }
             is FunctionAssignment -> {
@@ -110,28 +110,12 @@ class Interpreter {
         }
     }
 
-    fun evaluateBinaryIntegerFunctions(
+    private fun <T> evaluateBinaryFunctions(
         expression1: Language,
         expression2: Language,
         state: State,
-        param: (Int, Int) -> Integer
-    ): Pair<Integer, State> {
-        val (a, state1) = evaluate(expression1, state)
-        val (b, state2) = evaluate(expression2, state1)
-        if (a is Integer && b is Integer) {
-            val result = param.invoke(a.value, b.value)
-            return Pair(result, state2)
-        } else {
-            throw IllegalStateException()
-        }
-    }
-
-    fun evaluateBinaryBoolFunctions(
-        expression1: Language,
-        expression2: Language,
-        state: State,
-        param: (Int, Int) -> Bool
-    ): Pair<Bool, State> {
+        param: (Int, Int) -> T
+    ): Pair<T, State> {
         val (a, state1) = evaluate(expression1, state)
         val (b, state2) = evaluate(expression2, state1)
         if (a is Integer && b is Integer) {
