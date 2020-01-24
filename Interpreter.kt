@@ -50,11 +50,8 @@ class Interpreter {
                     program.expression2,
                     state
                 ) { a, b ->
-                    if (b != 0) {
-                        Integer(a / b)
-                    } else {
-                        throw IllegalStateException()
-                    }
+                    check(b != 0)
+                    Integer(a / b)
                 }
             }
 
@@ -97,14 +94,11 @@ class Interpreter {
 
             is If -> {
                 val (condition, state1) = evaluate(program.condition, state)
-                when (condition) {
-                    is Bool ->
-                        if (condition.value) {
-                            evaluate(program.expression1, state1)
-                        } else {
-                            evaluate(program.expression2, state1)
-                        }
-                    else -> throw IllegalStateException()
+                check(condition is Bool)
+                if (condition.value) {
+                    evaluate(program.expression1, state1)
+                } else {
+                    evaluate(program.expression2, state1)
                 }
             }
         }
@@ -118,11 +112,8 @@ class Interpreter {
     ): Pair<T, State> {
         val (a, state1) = evaluate(expression1, state)
         val (b, state2) = evaluate(expression2, state1)
-        if (a is Integer && b is Integer) {
-            val result = param.invoke(a.value, b.value)
-            return Pair(result, state2)
-        } else {
-            throw IllegalStateException()
-        }
+        check(a is Integer && b is Integer)
+        val result = param.invoke(a.value, b.value)
+        return Pair(result, state2)
     }
 }
