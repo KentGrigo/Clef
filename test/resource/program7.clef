@@ -1,0 +1,2 @@
+nonstopwithargument(x) = nonstopwithargument(x)
+nonstopwithargument(5)

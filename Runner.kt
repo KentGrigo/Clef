@@ -29,12 +29,12 @@ fun main() {
     val program5 =
         Statement(
             FunctionAssignment(
-                Variable("id"),
+                Variable("f"),
                 listOf(Variable("x")),
                 Variable("x")
             ),
             FunctionCall(
-                Variable("id"),
+                Variable("f"),
                 listOf(Integer(5))
             )
         )
