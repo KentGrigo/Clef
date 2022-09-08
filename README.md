@@ -1,12 +1,13 @@
 # Clef
+
 ## What is this?
-The is an implementation of the imperative programming language, Clef.
+This is an implementation of the imperative programming language, Clef.
 
 ## Status
 Currently, there is only an AST and an interpreter for a simple subset of the language.
 We support
-- Basic type (Interger, Bool, Variables)
-- arithmatics (+, -, *, /)
+- Basic type (Integer, Bool, Variables)
+- Arithmetics (+, -, *, /)
 - Functions
 - Conditions (if, <, <=, ==)
 - Assignment (function, variable)
